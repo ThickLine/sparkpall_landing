@@ -1,75 +1,70 @@
 ---
-import '../styles/main.css'
+import Layout from "../layouts/Layout.astro";
 
-const heading = "Party Banner";
-const subheading = "Airplay custom animated banners to your TV and elevate any celebration.";
+const heading = "SparkPall";
+const subheading =
+  "Your Friendly Electricity Price Companion for the Baltic Region";
 const appIcon = "/images/app-icon.svg";
-const appScreenshot = "/images/app-screenshot.png";
-const footerImage = "/images/banners.svg";
+const appScreenshot = "/images/sparkpall_landing_mock.webp";
 const badges = [
-	{
-		link: "https://apps.apple.com/us/app/party-banner/id1610931185",
-		image: "/images/app-store-badge.svg"
-	},
-	{
-		link: "https://apps.apple.com/us/app/party-banner/id1610931185",
-		image: "/images/google-play-badge.png"
-	},
+  {
+    link: "https://apps.apple.com/us/app/sparkpall/id1610931185",
+    image: "/images/app-store-badge.svg",
+    alt: "Download on the App Store",
+  },
+  {
+    link: "https://play.google.com/store/apps/details?id=com.sparkpall.app",
+    image: "/images/google-play-badge.png",
+    alt: "Get it on Google Play",
+  },
 ];
 const authors = [
-	{
-		name: "Will Walker",
-		url: "https://willswire.com"
-	},
-	{
-		name: "Caden Kulp",
-		url: "https://cadens.studio"
-	},
+  {
+    name: "SparkPall Team",
+    url: "https://github.com/sparkpall",
+  },
 ];
-const pageTitle = "App Showcase"
-const favicon = "/images/favicon.svg"
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href={favicon} />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{pageTitle}</title>
-	</head>
-	<body>
-		<div class="container">
-			<main>
-				<div class="text-container">
-					<img src={appIcon} class="app-icon">
-					<h1 class="heading">{heading}</h1>
-					<h2 class="subheading">{subheading}</h2>
-					<div class="badge-container">
-						{badges.map(badge => (
-							<div>
-								<a href={badge.link} target="_blank">
-									<img src={badge.image} class="badge" />
-								</a>
-							</div>
-						))}
-					</div>
-					<p class="authors">Made with &#x2665; by 
-						{authors.map((author, index) => (
-								<span>
-									{index > 0 ? (index === authors.length - 1 ? ' and ' : ', ') : ''}
-									<a href={author.url} target="_blank">{author.name}</a>
-								</span>
-						))}
-					</p>
-				</div>
-				<div>
-					<img src={appScreenshot} class="app-screenshot">
-				</div>
-			</main>
-			<footer>
-				<img src={footerImage} class="footer-image">
-			</footer>
-		</div>
-	</body>
-</html>
+<Layout
+  title="SparkPall - Your Friendly Electricity Price Companion"
+  description="SparkPall is your go-to app for tracking electricity prices in the Baltic Region. Stay informed and save on your energy costs."
+  image={appScreenshot}
+>
+  <div class="landing-content">
+    <div class="text-container">
+      <img src={appIcon} alt="SparkPall Logo" class="app-icon" />
+      <h1 class="heading">{heading}</h1>
+      <h2 class="subheading">{subheading}</h2>
+      <div class="badge-container">
+        {
+          badges.map((badge) => (
+            <a href={badge.link} target="_blank">
+              <img src={badge.image} alt={badge.alt} class="badge" />
+            </a>
+          ))
+        }
+      </div>
+      <p class="authors">
+        Made with ♥ by
+        {
+          authors.map((author, index) => (
+            <span>
+              {index > 0 && ", "}
+              <a href={author.url} target="_blank">
+                {author.name}
+              </a>
+            </span>
+          ))
+        }
+      </p>
+    </div>
+    <div class="app-showcase">
+      <img
+        src={appScreenshot}
+        alt="SparkPall App Screenshot"
+        class="app-screenshot"
+      />
+    </div>
+  </div>
+</Layout>

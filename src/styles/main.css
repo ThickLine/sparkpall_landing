@@ -1,13 +1,17 @@
 @font-face {
   font-family: 'Titan One';
-  font-style: regular;
+  font-style: normal;
   font-weight: 400;
   src: url('/fonts/Titan_One_regular.woff2') format('woff2');
 }
 
 :root {
-  --accent: #FF9305;
-  --secondary: #8e8e93;
+  --primary: #fff;
+  --background: #000000;
+  --text: #ffffff;
+  --text-secondary: #b3b3b3;
+  --accent: #808080;
+  --link: #4a90e2;
 }
 
 * {
@@ -22,7 +26,8 @@ html {
 body {
   font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Segoe UI, Roboto, Noto Sans, Helvetica Neue;
   -webkit-font-smoothing: antialiased;
-  color: var(--secondary);
+  color: var(--text);
+  background-color: var(--background);
 }
 
 h1, h2, h3 {
@@ -30,23 +35,31 @@ h1, h2, h3 {
 }
 
 h1 {
-  font-size: 5em;
+  font-size: 2.5em;
   font-weight: 900;
-  margin-bottom: .1em;
+  margin-bottom: 0.5em;
 }
 
 h2 {
-  font-size: 2em;
+  font-size: 1.5em;
   font-weight: 400;
+  margin-bottom: 1em;
+}
+
+p {
+  margin-bottom: 1em;
+  line-height: 1.6;
 }
 
 .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   min-height: 100vh;
-  padding: 0;
 }
 
 main {
@@ -56,29 +69,46 @@ main {
   justify-content: center;
   align-items: center;
   gap: 80px;
+  width: 100%;
+}
+
+.content {
+  padding: 40px 0;
+  width: 100%;
+}
+
+.landing-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
 }
 
 .text-container {
-  width: 60%;
+  flex: 1;
+  max-width: 50%;
 }
 
 .app-icon {
   width: 80px;
-  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 20px 0px rgba(255, 255, 255, 0.1);
   border-radius: 24px;
   margin-bottom: 10px;
 }
 
 .heading {
   font-family: 'Titan One', sans-serif;
-  color: var(--accent);
+  color: var(--primary);
   margin-bottom: 16px;
+  font-size: 5em;
 }
 
 .subheading {
   font-size: 1.75rem;
   font-weight: 300;
   margin-bottom: 30px;
+  color: var(--text-secondary);
 }
 
 .badge-container {
@@ -91,25 +121,39 @@ main {
   margin-bottom: 20px;
   height: 50px;
 }
+
 .badge:hover {
   cursor: pointer;
 }
 
 .authors {
   font-weight: 300;
+  color: var(--text-secondary);
 }
 
 .authors a {
-  color: inherit;
+  color: var(--link);
   font-weight: 500;
   text-decoration: none;
 }
+
 .authors a:hover {
   text-decoration: underline;
 }
 
+.app-showcase {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+
 .app-screenshot {
-  width: 220px;
+  width: 100%;
+  height: auto;
+  max-height: 90vh;
+  object-fit: contain;
 }
 
 footer {
@@ -117,6 +161,16 @@ footer {
   text-align: center;
   padding-top: 30px;
   overflow: hidden;
+  color: var(--text-secondary);
+}
+
+footer a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
 }
 
 .footer-image {
@@ -128,15 +182,103 @@ footer {
   top: 30px;
 }
 
+/* Styles for privacy policy and terms pages */
+.page-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.content {
+  margin-bottom: 3rem;
+}
+
+h1 {
+  margin-bottom: 2rem;
+}
+
+h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+p, ul {
+  margin-bottom: 1.5rem;
+}
+
+ul {
+  padding-left: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.75rem;
+}
+
+.effective-date {
+  margin-bottom: 2rem;
+}
+
+hr {
+  margin: 3rem 0;
+}
+
+.generator-credit {
+  font-size: 0.9em;
+  color: var(--text-secondary);
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Media query for mobile devices */
 @media (max-width: 768px) {
   main {
     flex-direction: column;
-    padding: 40px;
+    padding: 20px;
   }
-  .text-container {
+
+  .landing-content {
+    flex-direction: column;
+  }
+
+  .text-container,
+  .app-showcase {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .app-screenshot {
     width: 100%;
   }
+
+  .heading {
+    font-size: 3em;
+  }
+
+  .subheading {
+    font-size: 1.5rem;
+  }
+
   .footer-image {
     top: 5px;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-size: 1.2em;
   }
 }

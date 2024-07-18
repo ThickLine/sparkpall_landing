@@ -1,0 +1,17 @@
+---
+const termsPoints = [
+  "The app is provided as-is, free of charge.",
+  "Unauthorized modification or distribution is prohibited.",
+  "We may update the app or terms at any time.",
+  "You're responsible for data charges and device security.",
+];
+---
+
+<div class="legal-summary">
+  <h3>Terms and Conditions Summary</h3>
+  <p>By using SparkPall, you agree to our Terms and Conditions. Key points:</p>
+  <ul>
+    {termsPoints.map((point) => <li>{point}</li>)}
+  </ul>
+  <a href="/terms">Read Full Terms and Conditions</a>
+</div>
