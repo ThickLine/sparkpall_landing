@@ -56,18 +56,19 @@ const playStoreUrl = `https://play.google.com/store/apps/details?id=${appId}`;
     <button id="openAppBtn">Open SparkPall App</button>
   </div>
 
-  <script
-    define:vars={{
-      appScheme,
-      userId,
-      secret,
-      expire,
-      appStoreUrl,
-      playStoreUrl,
-      isExpired,
-    }}
-  >
+  <script>
+    // Retrieve parameters from the current URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get("userId");
+    const secret = urlParams.get("secret");
+    const expire = urlParams.get("expire");
+
     console.log("Client-side parameters:", { userId, secret, expire });
+
+    const appScheme = "sparkpall://";
+    const appStoreUrl = "https://apps.apple.com/us/app/sparkpall/id1610931185";
+    const playStoreUrl =
+      "https://play.google.com/store/apps/details?id=xyz.sparkpall.app";
 
     function openApp() {
       const deepLink = `${appScheme}email-verification?userId=${userId}&secret=${secret}&expire=${expire}`;
@@ -76,7 +77,7 @@ const playStoreUrl = `https://play.google.com/store/apps/details?id=${appId}`;
 
     document.getElementById("openAppBtn").addEventListener("click", openApp);
 
-    if (!isExpired && userId && secret) {
+    if (userId && secret) {
       document
         .getElementById("verifyEmailBtn")
         .addEventListener("click", async () => {
