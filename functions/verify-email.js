@@ -10,6 +10,10 @@ exports.handler = async (event, context) => {
   try {
     const { userId, secret } = JSON.parse(event.body);
 
+    if (!userId || !secret) {
+      throw new Error("Missing userId or secret");
+    }
+
     const client = new Client()
       .setEndpoint(process.env.APPWRITE_ENDPOINT)
       .setProject(process.env.APPWRITE_PROJECT_ID);
@@ -26,7 +30,9 @@ exports.handler = async (event, context) => {
     console.error("Email verification failed:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Email verification failed" }),
+      body: JSON.stringify({
+        message: "Email verification failed: " + error.message,
+      }),
     };
   }
 };

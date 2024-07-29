@@ -1,9 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-const userId = Astro.url.searchParams.get("userId");
-const secret = Astro.url.searchParams.get("secret");
-const expire = Astro.url.searchParams.get("expire");
+// Correctly parse the URL parameters
+const url = new URL(Astro.request.url);
+const userId = url.searchParams.get("userId");
+const secret = url.searchParams.get("secret");
+const expire = url.searchParams.get("expire");
 
 // We'll consider the link as not expired since we're using server time
 const isExpired = false;
@@ -67,7 +69,7 @@ const playStoreUrl = `https://play.google.com/store/apps/details?id=${appId}`;
 
     document.getElementById("openAppBtn").addEventListener("click", openApp);
 
-    if (!isExpired) {
+    if (!isExpired && userId && secret) {
       document
         .getElementById("verifyEmailBtn")
         .addEventListener("click", async () => {
@@ -96,6 +98,10 @@ const playStoreUrl = `https://play.google.com/store/apps/details?id=${appId}`;
               "block";
           }
         });
+    } else {
+      console.error("Missing userId or secret");
+      document.getElementById("verificationContent").style.display = "none";
+      document.getElementById("verificationError").style.display = "block";
     }
   </script>
 
