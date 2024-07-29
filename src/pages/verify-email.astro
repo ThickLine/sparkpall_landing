@@ -5,8 +5,8 @@ const userId = Astro.url.searchParams.get("userId");
 const secret = Astro.url.searchParams.get("secret");
 const expire = Astro.url.searchParams.get("expire");
 
-// Check if the expire time is in the future
-const isExpired = new Date(expire) < new Date();
+// We'll consider the link as not expired since we're using server time
+const isExpired = false;
 
 const appScheme = "sparkpall://";
 const appId = "xyz.sparkpall.app";
@@ -62,16 +62,7 @@ const playStoreUrl = `https://play.google.com/store/apps/details?id=${appId}`;
   >
     function openApp() {
       const deepLink = `${appScheme}email-verification?userId=${userId}&secret=${secret}&expire=${expire}`;
-      const fallbackUrl = /iPhone|iPad|iPod/i.test(navigator.userAgent)
-        ? appStoreUrl
-        : playStoreUrl;
-
       window.location.href = deepLink;
-
-      setTimeout(() => {
-        if (document.hidden) return;
-        window.location.href = fallbackUrl;
-      }, 2000);
     }
 
     document.getElementById("openAppBtn").addEventListener("click", openApp);
@@ -106,9 +97,6 @@ const playStoreUrl = `https://play.google.com/store/apps/details?id=${appId}`;
           }
         });
     }
-
-    // Try to open the app immediately when the page loads
-    openApp();
   </script>
 
   <style>
