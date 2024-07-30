@@ -36,17 +36,6 @@ const secret = Astro.url.searchParams.get("secret");
             class="app-store-badge"
           />
         </a>
-        <a
-          href="https://play.google.com/store/apps/details?id=xyz.sparkpall.app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img
-            src="/images/google-play-badge.png"
-            alt="Get it on Google Play"
-            class="google-play-badge"
-          />
-        </a>
       </div>
     </div>
   </div>
@@ -115,80 +104,3 @@ const secret = Astro.url.searchParams.get("secret");
     document.getElementById("statusMessage").classList.add("error");
   }
 </script>
-
-<style>
-  .auth-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 2rem;
-    text-align: center;
-  }
-
-  .app-icon {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 1rem;
-  }
-
-  .message {
-    padding: 1rem;
-    border-radius: 5px;
-    margin-bottom: 1rem;
-  }
-
-  .success {
-    color: #155724;
-    background-color: #d4edda;
-  }
-
-  .error {
-    color: #721c24;
-    background-color: #f8d7da;
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .btn-icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 0.5rem;
-  }
-
-  .primary {
-    background-color: #007aff;
-    color: white;
-  }
-
-  .primary:hover {
-    background-color: #0056b3;
-  }
-
-  .app-store-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-
-  .app-store-badge,
-  .google-play-badge {
-    height: 40px;
-  }
-
-  .hidden {
-    display: none;
-  }
-</style>
