@@ -1,12 +1,15 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
+// Correctly parse the URL parameters
 const userId = Astro.url.searchParams.get("userId");
 const secret = Astro.url.searchParams.get("secret");
 const expire = Astro.url.searchParams.get("expire");
 
+// Check if the link is expired
 const isExpired = expire ? new Date(expire) < new Date() : false;
 
+// Log the parsed parameters for debugging
 console.log("Parsed parameters:", { userId, secret, expire, isExpired });
 ---
 
@@ -14,8 +17,8 @@ console.log("Parsed parameters:", { userId, secret, expire, isExpired });
   title="Verify Email - SparkPall"
   description="Verify your SparkPall email address"
 >
-  <div class="auth-container verify-email-container">
-    <img src="/images/app-icon.svg" alt="SparkPall Logo" class="app-icon" />
+  <div class="verify-email-container">
+    <img src="/images/app-icon.svg" alt="SparkPall Logo" class="app-logo" />
     <h1>Verify Your Email</h1>
     {
       isExpired ? (
@@ -34,7 +37,11 @@ console.log("Parsed parameters:", { userId, secret, expire, isExpired });
         </div>
       )
     }
-    <div id="verificationSuccess" class="message success hidden">
+    <div
+      id="verificationSuccess"
+      class="message success"
+      style="display: none;"
+    >
       <p>
         Your email has been successfully verified. You can now use all features
         of your account.
@@ -44,13 +51,13 @@ console.log("Parsed parameters:", { userId, secret, expire, isExpired });
         Open SparkPall App
       </button>
     </div>
-    <div id="verificationError" class="message error hidden">
+    <div id="verificationError" class="message error" style="display: none;">
       <p>
         An error occurred while verifying your email. Please try again or
         contact support.
       </p>
     </div>
-    <div id="loadingIndicator" class="loading hidden">
+    <div id="loadingIndicator" class="loading" style="display: none;">
       <div class="spinner"></div>
       <p>Verifying your email...</p>
     </div>
@@ -74,9 +81,11 @@ console.log("Parsed parameters:", { userId, secret, expire, isExpired });
     const deepLink = `${appScheme}email-verification?userId=${userId}&secret=${secret}&expire=${expire}`;
     window.location.href = deepLink;
 
+    // Fallback for if the app isn't installed
     setTimeout(() => {
-      if (document.hidden) return;
+      if (document.hidden) return; // The app was opened successfully
 
+      // If the app didn't open, redirect to the app store
       const isAndroid = /Android/i.test(navigator.userAgent);
       window.location.href = isAndroid ? playStoreUrl : appStoreUrl;
     }, 500);
@@ -92,12 +101,8 @@ console.log("Parsed parameters:", { userId, secret, expire, isExpired });
       .getElementById("verifyEmailBtn")
       ?.addEventListener("click", async () => {
         try {
-          document
-            .getElementById("verificationContent")
-            .classList.add("hidden");
-          document
-            .getElementById("loadingIndicator")
-            .classList.remove("hidden");
+          document.getElementById("verificationContent").style.display = "none";
+          document.getElementById("loadingIndicator").style.display = "flex";
 
           console.log("Sending verification request with:", { userId, secret });
           const response = await fetch("/.netlify/functions/verify-email", {
@@ -108,12 +113,11 @@ console.log("Parsed parameters:", { userId, secret, expire, isExpired });
             },
           });
 
-          document.getElementById("loadingIndicator").classList.add("hidden");
+          document.getElementById("loadingIndicator").style.display = "none";
 
           if (response.ok) {
-            document
-              .getElementById("verificationSuccess")
-              .classList.remove("hidden");
+            document.getElementById("verificationSuccess").style.display =
+              "block";
           } else {
             const errorData = await response.json();
             console.error("Verification failed:", errorData);
@@ -121,14 +125,131 @@ console.log("Parsed parameters:", { userId, secret, expire, isExpired });
           }
         } catch (error) {
           console.error("Error:", error);
-          document
-            .getElementById("verificationError")
-            .classList.remove("hidden");
+          document.getElementById("verificationError").style.display = "block";
         }
       });
   } else {
     console.error("Missing userId or secret", { userId, secret });
-    document.getElementById("verificationContent").classList.add("hidden");
-    document.getElementById("verificationError").classList.remove("hidden");
+    document.getElementById("verificationContent").style.display = "none";
+    document.getElementById("verificationError").style.display = "block";
   }
 </script>
+
+<style>
+  .verify-email-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .app-logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 2em;
+    font-weight: 900;
+    margin-bottom: 1em;
+    color: var(--primary);
+  }
+
+  .message {
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .error {
+    color: #ef4444;
+  }
+  .success {
+    color: #10b981;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .btn.primary {
+    background-color: var(--primary);
+    color: var(--background);
+  }
+
+  .btn.primary:hover {
+    background-color: #e0e0e0;
+  }
+
+  .btn.secondary {
+    background-color: var(--accent);
+    color: var(--text);
+  }
+
+  .btn.secondary:hover {
+    background-color: #9a9a9a;
+  }
+
+  .btn-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+  }
+
+  .separator {
+    margin: 1rem 0;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+  }
+
+  .loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .spinner {
+    border: 4px solid var(--text-secondary);
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .verify-email-container {
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: 1.75em;
+    }
+
+    .btn {
+      font-size: 0.875rem;
+    }
+  }
+</style>

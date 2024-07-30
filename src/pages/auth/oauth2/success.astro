@@ -1,0 +1,135 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+
+const userId = Astro.url.searchParams.get("userId");
+const accessToken = Astro.url.searchParams.get("accessToken");
+---
+
+<Layout
+  title="Authorization Successful - SparkPall"
+  description="Your SparkPall account has been successfully authorized"
+>
+  <div class="auth-container oauth-success-container">
+    <img src="/images/app-icon.svg" alt="SparkPall Logo" class="app-icon" />
+    <h1>Authorization Successful</h1>
+    <p class="message success">
+      Your SparkPall account has been successfully authorized. You can now use
+      all features of your account.
+    </p>
+    <button id="openAppBtn" class="btn primary">
+      <img src="/images/app-icon.svg" alt="" class="btn-icon" />
+      Open SparkPall App
+    </button>
+    <div id="appStoreLinks" class="hidden">
+      <p>Don't have the app installed? Download it now:</p>
+      <div class="app-store-buttons">
+        <a
+          href="https://apps.apple.com/us/app/sparkpall/id1610931185"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src="/images/app-store-badge.svg"
+            alt="Download on the App Store"
+            class="app-store-badge"
+          />
+        </a>
+        <a
+          href="https://play.google.com/store/apps/details?id=xyz.sparkpall.app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src="/images/google-play-badge.png"
+            alt="Get it on Google Play"
+            class="google-play-badge"
+          />
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script define:vars={{ userId, accessToken }}>
+  const appScheme = "sparkpall://";
+  const appStoreUrl = "https://apps.apple.com/us/app/sparkpall/id1610931185";
+  const playStoreUrl =
+    "https://play.google.com/store/apps/details?id=xyz.sparkpall.app";
+
+  function openApp() {
+    const deepLink = `${appScheme}oauth-success?userId=${userId}&accessToken=${accessToken}`;
+    window.location.href = deepLink;
+
+    setTimeout(() => {
+      if (!document.hidden) {
+        document.getElementById("appStoreLinks").classList.remove("hidden");
+      }
+    }, 1000);
+  }
+
+  document.getElementById("openAppBtn").addEventListener("click", openApp);
+
+  // Try to open the app automatically on page load
+  window.onload = openApp;
+</script>
+
+<style>
+  .auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .app-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 0.5rem;
+  }
+
+  .primary {
+    background-color: #007aff;
+    color: white;
+  }
+
+  .primary:hover {
+    background-color: #0056b3;
+  }
+
+  .app-store-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .app-store-badge,
+  .google-play-badge {
+    height: 40px;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
