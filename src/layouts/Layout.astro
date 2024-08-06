@@ -6,9 +6,19 @@ export interface Props {
   title: string;
   description: string;
   image?: string;
+  noindex?: boolean;
+  nofollow?: boolean;
 }
 
-const { title, description, image = "/default-og-image.png" } = Astro.props;
+const {
+  title,
+  description,
+  image = "/default-og-image.png",
+  noindex = true,
+  nofollow = true,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -28,6 +38,15 @@ const { title, description, image = "/default-og-image.png" } = Astro.props;
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url} />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Robots meta tag for controlling indexing -->
+    <meta
+      name="robots"
+      content={`${noindex ? "noindex" : "index"}, ${nofollow ? "nofollow" : "follow"}`}
+    />
   </head>
   <body>
     <div class="container">
