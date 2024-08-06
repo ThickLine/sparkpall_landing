@@ -13,12 +13,12 @@ export interface Props {
 const {
   title,
   description,
-  image = "/default-og-image.png",
+  image = "",
   noindex = true,
   nofollow = true,
 } = Astro.props;
-
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const { pathname } = Astro.url;
+const canonicalURL = new URL(pathname, Astro.site);
 ---
 
 <!doctype html>
